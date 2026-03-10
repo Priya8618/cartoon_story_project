@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magic Storybook</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #fffacd; font-family: 'Comic Sans MS', cursive, sans-serif; padding: 20px; }
+        .story-page { display: none; }
+        .story-page.active { display: block; }
+        .scene-image { width: 100%; border-radius: 15px; border: 5px solid white; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+    </style>
+</head>
+<body>
+    <div class="container text-center" style="max-width: 800px;">
+        <h1 class="text-success mb-4">📖 The Tale of {{ story.character_name }}</h1>
+
+        {% if story.audio_file %}
+        <div class="mb-4">
+            <audio controls class="w-100">
+                <source src="{{ story.audio_file.url }}" type="audio/mpeg">
+            </audio>
+        </div>
+        {% endif %}
+
+        <div class="card p-4 shadow-lg" style="border-radius: 20px; background: white;">
+            {% for page in pages %}
+            <div class="story-page {% if forloop.first %}active{% endif %}" id="page-{{ forloop.counter }}">
+                {% if page.scene_image %}
+                <img src="{{ page.scene_image.url }}" class="scene-image mb-3">
+                {% endif %}
+                <div class="text-start p-3" style="background: #fdfd96; border-radius: 10px;">
+                    <p class="fs-5">{{ page.text_content }}</p>
+                </div>
+                <p class="mt-2 text-muted">Page {{ page.page_number }} of {{ pages|length }}</p>
+            </div>
+            {% endfor %}
+
+            <div class="d-flex justify-content-between mt-4">
+                <button class="btn btn-primary" onclick="changePage(-1)">⬅️ Back</button>
+                <a href="{% url 'download_pdf' story.id %}" class="btn btn-danger">Save PDF</a>
+                <button class="btn btn-primary" onclick="changePage(1)">Next ➡️</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 1;
+        // eslint-disable-next-line no-undef
+        const totalPages = {{ pages|length }};
+        function changePage(dir) {
+            document.getElementById(`page-${currentPage}`).classList.remove('active');
+            currentPage += dir;
+            if (currentPage < 1) currentPage = 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+            document.getElementById(`page-${currentPage}`).classList.add('active');
+        }
+    </script>
+</body>
+</html>

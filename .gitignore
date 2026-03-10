@@ -1,0 +1,32 @@
+# Python environment (Very important - do not upload the venv folder!)
+venv/
+env/
+ENV/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django private settings & Database
+.env
+db.sqlite3
+db.sqlite3-journal
+
+# Media files (User uploads and generated AI content)
+# We usually don't want to upload 100s of generated images to Git
+media/uploads/*
+media/scenes/*
+media/audio/*
+media/pdfs/*
+# Keep the folder structure but ignore the content
+!media/uploads/.gitkeep
+!media/scenes/.gitkeep
+!media/audio/.gitkeep
+!media/pdfs/.gitkeep
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# IDE settings
+.vscode/
+.idea/

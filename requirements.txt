@@ -1,0 +1,8 @@
+Django==5.0.3
+Pillow==10.2.0
+requests==2.31.0
+openai==1.14.2
+elevenlabs==1.0.0
+deep-translator==1.11.4
+reportlab==4.1.0
+python-dotenv==1.0.1
